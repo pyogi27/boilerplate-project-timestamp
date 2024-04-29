@@ -25,21 +25,25 @@ app.get("/api/:date_string?", (req, res) => {
   let date;
 
   if (!date_string) {
-    date = new Date();
+    date = new Date(); // Current date and time if no date_string is provided
   } else {
-    if (isNaN(parseInt(date_string))) {
+    // Check if date_string is numeric, then parse it as an integer (timestamp)
+    if (!isNaN(date_string)) {
       date = new Date(parseInt(date_string));
     } else {
+      // Otherwise, parse it as a string
       date = new Date(date_string);
     }
   }
 
-  if (date.toString() == "Invalid Date") {
+  // Check if the date object is valid
+  if (date.toString() === "Invalid Date") {
     res.json({ error: "Invalid Date" });
   } else {
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   }
 });
+
 
 
 // Listen on port set in environment variable or default to 3000
